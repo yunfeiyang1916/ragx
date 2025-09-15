@@ -22,7 +22,6 @@ const _ = http.SupportPackageIsVersion1
 const OperationChatServiceChat = "/gen.ChatService/Chat"
 
 type ChatServiceHTTPServer interface {
-	// Chat 新增站点
 	Chat(context.Context, *ChatRequest) (*ChatReply, error)
 }
 

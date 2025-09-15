@@ -2,18 +2,25 @@ syntax = "proto3";
 
 package gen;
 
-option go_package = "vivalink.com/api/gen;gen";
+option go_package = "ragx/api/gen;gen";
 
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 import "validate/validate.proto";
+import "common.proto";
 
 service ChatService {
-  // 新增站点
   rpc Chat(ChatRequest) returns (ChatReply) {
     option (google.api.http) = {
       post: "/v1/chat"
+      body: "*"
+    };
+  }
+  // 流式输出
+  rpc ChatStream(ChatRequest) returns (stream ChatReply) {
+    option (google.api.http) = {
+      post: "/v1/chat/stream"
       body: "*"
     };
   }
@@ -39,12 +46,7 @@ message ChatReply {
   repeated Document references = 2;
 }
 
-// Document 文档结构
-message Document {
-  string id = 1; // 文档ID
-  string content = 2; // 文档内容
-  map<string, string> metadata = 3; // 元数据
-}
+
 
 
 

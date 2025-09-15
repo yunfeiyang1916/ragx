@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package gen;
+
+option go_package = "ragx/api/gen;gen";
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "validate/validate.proto";
+
+// Document 文档结构
+message Document {
+  string id = 1; // 文档ID
+  string content = 2; // 文档内容
+  map<string, string> metadata = 3; // 元数据
+}
+
+message StreamData {
+  // 同一个消息里面的id是相同的
+  string id = 1;
+  // 消息初始生成时间
+  int64 created = 2;
+  // 消息具体内容
+  string content = 3;
+  repeated Document document = 4;
+}

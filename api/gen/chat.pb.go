@@ -159,73 +159,12 @@ func (x *ChatReply) GetReferences() []*Document {
 	return nil
 }
 
-// Document 文档结构
-type Document struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`                                                                                       // 文档ID
-	Content       string                 `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"`                                                                             // 文档内容
-	Metadata      map[string]string      `protobuf:"bytes,3,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // 元数据
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Document) Reset() {
-	*x = Document{}
-	mi := &file_chat_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Document) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Document) ProtoMessage() {}
-
-func (x *Document) ProtoReflect() protoreflect.Message {
-	mi := &file_chat_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Document.ProtoReflect.Descriptor instead.
-func (*Document) Descriptor() ([]byte, []int) {
-	return file_chat_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *Document) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *Document) GetContent() string {
-	if x != nil {
-		return x.Content
-	}
-	return ""
-}
-
-func (x *Document) GetMetadata() map[string]string {
-	if x != nil {
-		return x.Metadata
-	}
-	return nil
-}
-
 var File_chat_proto protoreflect.FileDescriptor
 
 const file_chat_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"chat.proto\x12\x03gen\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x17validate/validate.proto\"\xaf\x01\n" +
+	"chat.proto\x12\x03gen\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x17validate/validate.proto\x1a\fcommon.proto\"\xaf\x01\n" +
 	"\vChatRequest\x12 \n" +
 	"\aconv_id\x18\x01 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x06convId\x12#\n" +
 	"\bquestion\x18\x02 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\bquestion\x12.\n" +
@@ -236,16 +175,11 @@ const file_chat_proto_rawDesc = "" +
 	"\x06answer\x18\x01 \x01(\tR\x06answer\x12-\n" +
 	"\n" +
 	"references\x18\x02 \x03(\v2\r.gen.DocumentR\n" +
-	"references\"\xaa\x01\n" +
-	"\bDocument\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
-	"\acontent\x18\x02 \x01(\tR\acontent\x127\n" +
-	"\bmetadata\x18\x03 \x03(\v2\x1b.gen.Document.MetadataEntryR\bmetadata\x1a;\n" +
-	"\rMetadataEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x012L\n" +
+	"references2\x9a\x01\n" +
 	"\vChatService\x12=\n" +
-	"\x04Chat\x12\x10.gen.ChatRequest\x1a\x0e.gen.ChatReply\"\x13\x82\xd3\xe4\x93\x02\r:\x01*\"\b/v1/chatBN\n" +
+	"\x04Chat\x12\x10.gen.ChatRequest\x1a\x0e.gen.ChatReply\"\x13\x82\xd3\xe4\x93\x02\r:\x01*\"\b/v1/chat\x12L\n" +
+	"\n" +
+	"ChatStream\x12\x10.gen.ChatRequest\x1a\x0e.gen.ChatReply\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/v1/chat/stream0\x01BN\n" +
 	"\acom.genB\tChatProtoP\x01Z\fragx/api/gen\xa2\x02\x03GXX\xaa\x02\x03Gen\xca\x02\x03Gen\xe2\x02\x0fGen\\GPBMetadata\xea\x02\x03Genb\x06proto3"
 
 var (
@@ -260,23 +194,23 @@ func file_chat_proto_rawDescGZIP() []byte {
 	return file_chat_proto_rawDescData
 }
 
-var file_chat_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_chat_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_chat_proto_goTypes = []any{
 	(*ChatRequest)(nil), // 0: gen.ChatRequest
 	(*ChatReply)(nil),   // 1: gen.ChatReply
 	(*Document)(nil),    // 2: gen.Document
-	nil,                 // 3: gen.Document.MetadataEntry
 }
 var file_chat_proto_depIdxs = []int32{
 	2, // 0: gen.ChatReply.references:type_name -> gen.Document
-	3, // 1: gen.Document.metadata:type_name -> gen.Document.MetadataEntry
-	0, // 2: gen.ChatService.Chat:input_type -> gen.ChatRequest
+	0, // 1: gen.ChatService.Chat:input_type -> gen.ChatRequest
+	0, // 2: gen.ChatService.ChatStream:input_type -> gen.ChatRequest
 	1, // 3: gen.ChatService.Chat:output_type -> gen.ChatReply
-	3, // [3:4] is the sub-list for method output_type
-	2, // [2:3] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	1, // 4: gen.ChatService.ChatStream:output_type -> gen.ChatReply
+	3, // [3:5] is the sub-list for method output_type
+	1, // [1:3] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_chat_proto_init() }
@@ -284,13 +218,14 @@ func file_chat_proto_init() {
 	if File_chat_proto != nil {
 		return
 	}
+	file_common_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_chat_proto_rawDesc), len(file_chat_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
