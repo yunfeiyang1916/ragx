@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package gen;
+
+option go_package = "vivalink.com/api/gen;gen";
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "validate/validate.proto";
+
+service ChatService {
+  // 新增站点
+  rpc Chat(ChatRequest) returns (ChatReply) {
+    option (google.api.http) = {
+      post: "/v1/chat"
+      body: "*"
+    };
+  }
+
+}
+
+message ChatRequest {
+  // 会话id
+  string conv_id = 1[(validate.rules).string = {min_len:1}];
+  // 问题
+  string question = 2 [(validate.rules).string = {min_len:1}];
+  string knowledge_name = 3 [(validate.rules).string = {min_len: 1}];
+  // 默认为5
+  int32 top_k = 4 ;
+  // 默认为0.2
+  string score = 5 ;
+}
+
+message ChatReply {
+  // 回答内容
+  string answer = 1;
+  // 参考文档列表
+  repeated Document references = 2;
+}
+
+// Document 文档结构
+message Document {
+  string id = 1; // 文档ID
+  string content = 2; // 文档内容
+  map<string, string> metadata = 3; // 元数据
+}
+
+
+
+
+

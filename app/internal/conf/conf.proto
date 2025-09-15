@@ -1,0 +1,55 @@
+syntax = "proto3";
+package kratos.api;
+
+import "google/protobuf/duration.proto";
+
+option go_package = "vivalink.com/app/internal/task/conf;conf";
+
+message Bootstrap {
+  Server server = 1;
+  Data data = 2;
+  AppConfig app = 3;
+}
+// AppConfig 定义应用配置信息
+message AppConfig {
+  // 应用运行环境，如 local、dev、prod 等
+  string env = 1;
+  // 本地化文件的路径
+  string localize_path = 2;
+  // 前台主域名
+  string host = 3;
+}
+
+message Server {
+  message HTTP {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  message GRPC {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  HTTP http = 1;
+  GRPC grpc = 2;
+  HTTP inner_http = 3;
+}
+
+message Data {
+  message Database {
+    string driver = 1;
+    string source = 2;
+  }
+  message Redis {
+    // single,cluster
+    string mode = 1;
+    string password = 2;
+    google.protobuf.Duration read_timeout = 3;
+    google.protobuf.Duration write_timeout = 4;
+    repeated string addrs = 5;
+  }
+  Database database = 1;
+  Redis redis = 2;
+  Database ch_database = 3;
+}
