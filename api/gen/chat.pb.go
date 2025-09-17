@@ -35,7 +35,7 @@ type ChatRequest struct {
 	// 默认为5
 	TopK int32 `protobuf:"varint,4,opt,name=top_k,json=topK,proto3" json:"top_k,omitempty"`
 	// 默认为0.2
-	Score         string `protobuf:"bytes,5,opt,name=score,proto3" json:"score,omitempty"`
+	Score         float64 `protobuf:"fixed64,5,opt,name=score,proto3" json:"score,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -98,11 +98,11 @@ func (x *ChatRequest) GetTopK() int32 {
 	return 0
 }
 
-func (x *ChatRequest) GetScore() string {
+func (x *ChatRequest) GetScore() float64 {
 	if x != nil {
 		return x.Score
 	}
-	return ""
+	return 0
 }
 
 type ChatReply struct {
@@ -164,22 +164,22 @@ var File_chat_proto protoreflect.FileDescriptor
 const file_chat_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"chat.proto\x12\x03gen\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x17validate/validate.proto\x1a\fcommon.proto\"\xaf\x01\n" +
+	"chat.proto\x12\x03gen\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x17validate/validate.proto\x1a\fcommon.proto\"\xa6\x01\n" +
 	"\vChatRequest\x12 \n" +
 	"\aconv_id\x18\x01 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x06convId\x12#\n" +
-	"\bquestion\x18\x02 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\bquestion\x12.\n" +
-	"\x0eknowledge_name\x18\x03 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\rknowledgeName\x12\x13\n" +
+	"\bquestion\x18\x02 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\bquestion\x12%\n" +
+	"\x0eknowledge_name\x18\x03 \x01(\tR\rknowledgeName\x12\x13\n" +
 	"\x05top_k\x18\x04 \x01(\x05R\x04topK\x12\x14\n" +
-	"\x05score\x18\x05 \x01(\tR\x05score\"R\n" +
+	"\x05score\x18\x05 \x01(\x01R\x05score\"R\n" +
 	"\tChatReply\x12\x16\n" +
 	"\x06answer\x18\x01 \x01(\tR\x06answer\x12-\n" +
 	"\n" +
 	"references\x18\x02 \x03(\v2\r.gen.DocumentR\n" +
-	"references2\x9a\x01\n" +
-	"\vChatService\x12=\n" +
-	"\x04Chat\x12\x10.gen.ChatRequest\x1a\x0e.gen.ChatReply\"\x13\x82\xd3\xe4\x93\x02\r:\x01*\"\b/v1/chat\x12L\n" +
+	"references2\xa2\x01\n" +
+	"\vChatService\x12A\n" +
+	"\x04Chat\x12\x10.gen.ChatRequest\x1a\x0e.gen.ChatReply\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\"\f/api/v1/chat\x12P\n" +
 	"\n" +
-	"ChatStream\x12\x10.gen.ChatRequest\x1a\x0e.gen.ChatReply\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/v1/chat/stream0\x01BN\n" +
+	"ChatStream\x12\x10.gen.ChatRequest\x1a\x0e.gen.ChatReply\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/v1/chat/stream0\x01BN\n" +
 	"\acom.genB\tChatProtoP\x01Z\fragx/api/gen\xa2\x02\x03GXX\xaa\x02\x03Gen\xca\x02\x03Gen\xe2\x02\x0fGen\\GPBMetadata\xea\x02\x03Genb\x06proto3"
 
 var (

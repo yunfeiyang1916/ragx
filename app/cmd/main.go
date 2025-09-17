@@ -2,7 +2,9 @@ package main
 
 import (
 	"flag"
+	"github.com/google/wire"
 	"os"
+	"ragx/app/pkg/ai"
 
 	"ragx/app/pkg/encoder"
 	logging "ragx/app/pkg/logger"
@@ -95,3 +97,5 @@ func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
 		),
 	)
 }
+
+var ProviderSet = wire.NewSet(ai.NewChatModel)

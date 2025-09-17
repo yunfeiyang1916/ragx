@@ -13,14 +13,14 @@ import "common.proto";
 service ChatService {
   rpc Chat(ChatRequest) returns (ChatReply) {
     option (google.api.http) = {
-      post: "/v1/chat"
+      post: "/api/v1/chat"
       body: "*"
     };
   }
   // 流式输出
   rpc ChatStream(ChatRequest) returns (stream ChatReply) {
     option (google.api.http) = {
-      post: "/v1/chat/stream"
+      post: "/api/v1/chat/stream"
       body: "*"
     };
   }
@@ -32,11 +32,11 @@ message ChatRequest {
   string conv_id = 1[(validate.rules).string = {min_len:1}];
   // 问题
   string question = 2 [(validate.rules).string = {min_len:1}];
-  string knowledge_name = 3 [(validate.rules).string = {min_len: 1}];
+  string knowledge_name = 3;
   // 默认为5
   int32 top_k = 4 ;
   // 默认为0.2
-  string score = 5 ;
+  double score = 5 ;
 }
 
 message ChatReply {

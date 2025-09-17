@@ -2,6 +2,8 @@ package server
 
 import (
 	"ragx/app/internal/conf"
+	"ragx/app/internal/service"
+	logging "ragx/app/pkg/middleware/log"
 
 	"github.com/go-kratos/kratos/v2/middleware/validate"
 
@@ -13,11 +15,12 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, logger log.Logger, streamService *service.StreamService) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
 			validate.Validator(),
+			logging.Server(logger),
 		),
 	}
 	if c.Http.Network != "" {
@@ -41,5 +44,6 @@ func NewHTTPServer(c *conf.Server, logger log.Logger) *http.Server {
 	srv.HandleFunc("/", func(w staticHttp.ResponseWriter, r *staticHttp.Request) {
 		staticHttp.ServeFile(w, r, "../../frontend/dist/index.html")
 	})
+	service.RegisterStreamServiceHTTPServer(srv, streamService)
 	return srv
 }
