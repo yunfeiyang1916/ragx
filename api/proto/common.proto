@@ -9,6 +9,10 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 import "validate/validate.proto";
 
+message IDReply  {
+  int64 id = 1;
+}
+
 // Document 文档结构
 message Document {
   string id = 1; // 文档ID

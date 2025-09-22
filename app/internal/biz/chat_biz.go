@@ -2,22 +2,23 @@ package biz
 
 import (
 	"context"
-	"github.com/cloudwego/eino/schema"
-	"github.com/go-kratos/kratos/v2/log"
 	pb "ragx/api/gen"
 	"ragx/app/internal/consts"
 	"ragx/app/pkg/ai"
+
+	"github.com/cloudwego/eino/schema"
+	"github.com/go-kratos/kratos/v2/log"
 )
 
 type ChatUsecase struct {
-	chatModel *ai.ChatModel
-	log       *log.Helper
+	aiClient *ai.Client
+	log      *log.Helper
 }
 
-func NewChatUsecase(chatModel *ai.ChatModel, logger log.Logger) *ChatUsecase {
+func NewChatUsecase(aiClient *ai.Client, logger log.Logger) *ChatUsecase {
 	return &ChatUsecase{
-		chatModel: chatModel,
-		log:       log.NewHelper(logger),
+		aiClient: aiClient,
+		log:      log.NewHelper(logger),
 	}
 }
 
@@ -67,7 +68,7 @@ func (c *ChatUsecase) ChatStream(ctx context.Context, req *pb.ChatRequest) (*sch
 		return nil, err
 	}
 	// 流式调用模型
-	sr, err := c.chatModel.Stream(ctx, messages)
+	sr, err := c.aiClient.ChatModel.Stream(ctx, messages)
 	if err != nil {
 		return nil, err
 	}

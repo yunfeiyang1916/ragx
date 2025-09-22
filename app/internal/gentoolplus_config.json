@@ -1,0 +1,22 @@
+{
+    "version": "1.0.4",
+    "database": {
+        "dbDriver": "postgres",
+        "dbName": "ragx",
+        "dsn": "postgres://root:root@localhost:5432/ragx?sslmode=disable",
+        "outPath": "./biz/query",
+        "outFile": "gen.go",
+        "nspname": "public",
+        "dataMap": {
+        },
+        "fieldNullable": true,
+        "fieldCoverable": false,
+        "fieldSignable": false,
+        "fieldWithIndexTag": false,
+        "fieldWithTypeTag": false,
+        "withUnitTest": false,
+        "singularTable": true,
+        "modelPkgPath": "entity",
+        "tables": []
+    }
+}

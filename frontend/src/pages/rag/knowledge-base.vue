@@ -160,10 +160,10 @@ const fetchKnowledgeBaseList = async () => {
   loading.value = true
   try {
     const response = await request.get('/v1/kb')
-    knowledgeBaseList.value = response.data.list || []
+    knowledgeBaseList.value = response.list || []
   } catch (error) {
     console.error('获取知识库列表失败:', error)
-    ElMessage.error('获取知识库列表失败: ' + (error.response?.data?.message || '未知错误'))
+    ElMessage.error('获取知识库列表失败: ' + (error.response?.message || '未知错误'))
   } finally {
     loading.value = false
   }
@@ -232,7 +232,7 @@ const submitForm = async () => {
       fetchKnowledgeBaseList()
     } catch (error) {
       console.error('操作失败:', error)
-      ElMessage.error('操作失败: ' + (error.response?.data?.message || '未知错误'))
+      ElMessage.error('操作失败: ' + (error.response?.message || '未知错误'))
     } finally {
       submitting.value = false
     }
@@ -256,7 +256,7 @@ const confirmDelete = (row) => {
       fetchKnowledgeBaseList()
     } catch (error) {
       console.error('删除失败:', error)
-      ElMessage.error('删除失败: ' + (error.response?.data?.message || '未知错误'))
+      ElMessage.error('删除失败: ' + (error.response?.message || '未知错误'))
     }
   }).catch(() => {
     // 用户取消删除

@@ -6,14 +6,14 @@ import (
 	pb "ragx/api/gen"
 )
 
-type ChatServiceService struct {
+type ChatService struct {
 	pb.UnimplementedChatServiceServer
 }
 
-func NewChatServiceService() *ChatServiceService {
-	return &ChatServiceService{}
+func NewChatService() *ChatService {
+	return &ChatService{}
 }
 
-func (s *ChatServiceService) Chat(ctx context.Context, req *pb.ChatRequest) (*pb.ChatReply, error) {
+func (s *ChatService) Chat(ctx context.Context, req *pb.ChatRequest) (*pb.ChatReply, error) {
 	return &pb.ChatReply{}, nil
 }

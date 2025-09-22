@@ -1,6 +1,7 @@
 package server
 
 import (
+	pb "ragx/api/gen"
 	"ragx/app/internal/conf"
 	"ragx/app/internal/service"
 	logging "ragx/app/pkg/middleware/log"
@@ -15,7 +16,10 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, logger log.Logger, streamService *service.StreamService) *http.Server {
+func NewHTTPServer(c *conf.Server, logger log.Logger,
+	streamService *service.StreamService,
+	kbService *service.KnowledgeBaseService,
+	indexerService *service.IndexerService) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
@@ -45,5 +49,7 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, streamService *service.Str
 		staticHttp.ServeFile(w, r, "../../frontend/dist/index.html")
 	})
 	service.RegisterStreamServiceHTTPServer(srv, streamService)
+	service.RegisterIndexerServiceHTTPServer(srv, indexerService)
+	pb.RegisterKnowledgeBaseServiceHTTPServer(srv, kbService)
 	return srv
 }

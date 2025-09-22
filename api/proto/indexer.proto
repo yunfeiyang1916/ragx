@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package gen;
+
+option go_package = "ragx/api/gen;gen";
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "validate/validate.proto";
+import "common.proto";
+
+service IndexerService {
+  // 上传文件索引，定义成stream方式，这样就不会生成http.pb文件了，需要自己实现http请求
+  rpc UploadIndexer(stream UploadIndexerRequest) returns (UploadIndexerReply) {
+    option (google.api.http) = {
+      post: "/api/v1/indexer"
+      body: "*"
+    };
+  }
+}
+
+message UploadIndexerRequest {
+  string knowledge_name = 1;
+  string uri = 2;
+}
+message UploadIndexerReply {
+  repeated string doc_ids = 1;
+}
+
+

@@ -11,7 +11,7 @@ server:
 data:
   database:
     driver: postgres
-    source: postgresql://root:root@localhost:5432/controller?sslmode=disable
+    source: postgresql://root:root@localhost:5432/ragx?sslmode=disable
   redis:
     mode: "single" # single,cluster
     password: "NoHCIlUY3fORN9R4GHfm"
@@ -19,3 +19,8 @@ data:
     write_timeout: 10s
     addrs:
       - "localhost:6379"
+  elasticsearch:
+    address: "localhost:9200"
+    index_name: "ragx"
+    #username: "elastic"
+    #password: "123456"

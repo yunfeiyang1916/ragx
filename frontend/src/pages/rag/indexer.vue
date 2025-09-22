@@ -14,10 +14,10 @@ function beforeUpload(file) {
   const allowedTypes = ['text/markdown', 'text/html', 'text/plain']
   const isAllowed = allowedTypes.includes(file.type)
 
-  if (!isAllowed) {
-    ElMessage.error('只支持 Markdown、HTML 和文本文件!')
-    return false
-  }
+  //if (!isAllowed) {
+    //ElMessage.error('只支持 Markdown、HTML 和文本文件!')
+    //return false
+  //}
 
   // 显示处理中信息
   processingInfo.value = {
@@ -38,7 +38,7 @@ function handleUploadSuccess(response) {
   }
   // 显示索引结果
   indexResult.value = {
-    chunks: response.data?.doc_ids?.length || 0,
+    chunks: response.doc_ids?.length || 0,
     status: 'success'
   }
 

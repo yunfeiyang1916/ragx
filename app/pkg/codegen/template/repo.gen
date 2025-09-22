@@ -1,0 +1,28 @@
+{{ range $i, $table := .tables }}
+    {{$singular   := singular $table -}}
+    {{$plural     := pluralize $table -}}
+    {{$title      := title $table -}}
+    {{$lower      := toLower $table -}}
+    {{$lowerCamel := toLowerCamelCase $table -}}
+    {{$snakeCase  := toSnakeCase $table -}}
+    {{ printf "[%-2d] %-20s %-20s %-20s %-20s %-20s %-20s %-20s" $i $table $singular $plural $title $lower $lowerCamel $snakeCase}}{{- end }}
+
+{{ $i := 0 }}
+{{ range $tableName , $table := .tableInfos }}
+   {{$i := inc }}
+   {{$name := toLower $table.TableName -}}
+   {{ if ne $name "schema_migrations"  }}
+       {{$modelName  := printf "%s.gen.go" $name -}}
+       {{$filename  := printf "%s_biz.gen.go" $name -}}
+       {{$daoName  := printf "%s_repo.gen.go" $name -}}
+       {{ printf "[%-2d] %-20s %-20s" $i $name $filename}}
+       {{ GenerateTableFile $table.TableName  "biz.go.tmpl" "biz-tmp" $filename}}
+       {{ GenerateTableFile $table.TableName  "repo.go.tmpl" "repo" $daoName}}
+   {{- end }}
+   {{- end }}
+
+{{ GenerateFile "repo_base.go.tmpl" "data/repo-base-tmp" "repo_base.gen.go" false }}
+
+
+
+ 

@@ -151,14 +151,14 @@ const handleSearch = async () => {
       score: searchForm.score,
       knowledge_name: knowledgeSelectorRef.value?.getSelectedKnowledgeId() || ''
     })
-    searchResults.value = response.data.document || []
+    searchResults.value = response.document || []
     
     if (searchResults.value.length === 0) {
       ElMessage.info('未找到相关文档')
     }
   } catch (error) {
     console.error('检索失败:', error)
-    ElMessage.error('检索失败: ' + (error.response?.data?.message || '未知错误'))
+    ElMessage.error('检索失败: ' + (error.response?.message || '未知错误'))
     searchResults.value = []
   } finally {
     loading.value = false

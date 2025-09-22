@@ -34,11 +34,11 @@ function fetchDocumentsList() {
     },
   })
     .then((response) => {
-      documentsList.value = response.data.data || []
-      total.value = response.data.total || 0
+      documentsList.value = response.data || []
+      total.value = response.total || 0
     })
     .catch((error) => {
-      const errorMessage = error.response?.data?.message || '未知错误'
+      const errorMessage = error.response?.message || '未知错误'
       ElMessage.error(`获取文档列表失败: ${errorMessage}`)
     })
     .finally(() => {

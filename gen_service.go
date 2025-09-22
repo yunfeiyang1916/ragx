@@ -4,4 +4,4 @@ package main
 ////go:generate kratos proto add api/proto/chat.proto
 
 // 生成 server 源码 (手动改下文件后缀 _service.go)
-//go:generate kratos proto server ./api/proto/chat.proto -t app/internal/service
+//go:generate kratos proto server ./api/proto/indexer.proto -t app/internal/service

@@ -49,7 +49,15 @@ message Data {
     google.protobuf.Duration write_timeout = 4;
     repeated string addrs = 5;
   }
+  message Elasticsearch {
+    string address = 1;
+    string index_name = 2;
+    string username = 3;
+    string password = 4;
+  }
+
   Database database = 1;
   Redis redis = 2;
   Database ch_database = 3;
+  Elasticsearch elasticsearch = 4;
 }

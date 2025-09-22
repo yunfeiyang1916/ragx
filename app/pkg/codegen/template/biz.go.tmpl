@@ -1,0 +1,101 @@
+package biz
+
+import (
+	"context"
+	"github.com/go-kratos/kratos/v2/log"
+	"gorm.io/gen"
+	"gorm.io/gen/field"
+	"ragx/app/internal/biz/entity"
+	"ragx/app/internal/biz/query"
+)
+
+type {{.StructName}}Repo interface {
+	Query() *query.Query
+	// 批量创建，支持事务
+    BatchCreate(context.Context, []*entity.{{.StructName}}, ...*query.Query) ([]*entity.{{.StructName}}, error)
+	// 创建，支持事务
+	Create(context.Context, *entity.{{.StructName}}, ...*query.Query) (*entity.{{.StructName}}, error)
+	Update(context.Context, *entity.{{.StructName}}, ...field.Expr) (int64, error)
+	UpdateWithTx(context.Context, *query.Query,*entity.{{.StructName}}, ...field.Expr) (int64, error)
+	// 保存全部字段，支持事务
+	Save(context.Context, *entity.{{.StructName}}, ...*query.Query) (int64, error)
+	// 删除，支持事务
+	Delete(context.Context, {{range $field := .TableInfo.CodeFields}} {{ if $field.PrimaryKeyArgName }} {{ $field.GoFieldType}},{{end}}{{end -}} ...*query.Query) (int64, error)
+	DeleteByConditions(context.Context, ...gen.Condition) (int64, error)
+	DeleteByConditionsWithTx(context.Context, *query.Query, ...gen.Condition) (int64, error)
+	Get(context.Context, {{range $field := .TableInfo.CodeFields}} {{ if $field.PrimaryKeyArgName }} {{ $field.GoFieldType}},{{end}}{{end -}}...field.RelationField) (*entity.{{.StructName}}, error)
+	GetByConditions(context.Context, ...gen.Condition) (*entity.{{.StructName}}, error)
+	// 支持预加载
+	GetByConditionsWithPreload(context.Context,[]field.RelationField, ...gen.Condition) (*entity.{{.StructName}}, error)
+	List(context.Context, *entity.PageAndOrder, ...gen.Condition) ([]*entity.{{.StructName}}, int64, error)
+	// 只需要列表，不需要总数
+	ListWithoutCount(context.Context, *entity.PageAndOrder, ...gen.Condition) ([]*entity.{{.StructName}}, error)
+	ListAll(context.Context, ...gen.Condition) ([]*entity.{{.StructName}}, error)
+	// 支持预加载
+	ListAllWithPreload(context.Context,[]field.RelationField,...gen.Condition) ([]*entity.{{.StructName}}, error)
+	Count(context.Context, ...gen.Condition) (int64, error)
+}
+
+type {{.StructName}}Usecase struct {
+	repo {{.StructName}}Repo
+	log  *log.Helper
+}
+
+func New{{.StructName}}Usecase(repo {{.StructName}}Repo, logger log.Logger) *{{.StructName}}Usecase {
+	return &{{.StructName}}Usecase{repo: repo, log: log.NewHelper(logger)}
+}
+
+func (uc *{{.StructName}}Usecase) Create(ctx context.Context, obj *entity.{{.StructName}}) (*entity.{{.StructName}}, error) {
+	e, err := uc.repo.Create(ctx, obj)
+	if err != nil {
+		uc.log.Errorf("%+v", err)
+		return nil, err
+	}
+	return e, nil
+}
+
+func (uc *{{.StructName}}Usecase) Update(ctx context.Context, obj *entity.{{.StructName}}) (*entity.{{.StructName}}, error) {
+	_, err := uc.repo.Save(ctx, obj)
+	if err != nil {
+		uc.log.Errorf("%+v", err)
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (uc *{{.StructName}}Usecase) Delete(ctx context.Context, {{range $field := .TableInfo.CodeFields}} {{ if $field.PrimaryKeyArgName }} {{ toLower $field.GoFieldName}} {{ $field.GoFieldType}},{{end}}{{end -}}) error {
+	_,err := uc.repo.Delete(ctx, id)
+	if err != nil {
+		uc.log.Errorf("%+v", err)
+		return err
+	}
+	return nil
+}
+
+func (uc *{{.StructName}}Usecase) Get(ctx context.Context, {{range $field := .TableInfo.CodeFields}} {{ if $field.PrimaryKeyArgName }} {{ toLower $field.GoFieldName}} {{ $field.GoFieldType}},{{end}}{{end -}}) (*entity.{{.StructName}}, error) {
+	e, err := uc.repo.Get(ctx, id)
+	if err != nil {
+		uc.log.Errorf("%+v", err)
+		return nil, err
+	}
+	return e, nil
+}
+
+func (uc *{{.StructName}}Usecase) List(ctx context.Context, page *entity.PageAndOrder) ([]*entity.{{.StructName}}, int64, error) {
+	arr, count, err := uc.repo.List(ctx, page)
+	if err != nil {
+		uc.log.Errorf("%+v", err)
+		return nil, 0, err
+	}
+	return arr, count, nil
+}
+
+func (uc *{{.StructName}}Usecase) ListAll(ctx context.Context) ([]*entity.{{.StructName}}, error) {
+	arr, err := uc.repo.ListAll(ctx)
+	if err != nil {
+		uc.log.Errorf("%+v", err)
+		return nil, err
+	}
+	return arr, nil
+}
+

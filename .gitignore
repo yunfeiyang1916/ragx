@@ -34,3 +34,7 @@ go.work.sum
 **/node_modules/
 **/dist/
 **/build/
+
+app/internal/data/biz-tmp/
+app/internal/data/repo-base-tmp/
+app/cmd/uploads

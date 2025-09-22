@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package gen;
+
+option go_package = "ragx/api/gen;gen";
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "validate/validate.proto";
+import "common.proto";
+
+service KnowledgeBaseService {
+  rpc CreateKnowledgeBase(CreateKnowledgeBaseRequest) returns (IDReply) {
+    option (google.api.http) = {
+      post: "/api/v1/kb"
+      body: "*"
+    };
+  }
+
+  rpc UpdateKnowledgeBase(CreateKnowledgeBaseRequest) returns (IDReply) {
+    option (google.api.http) = {
+      put: "/api/v1/kb/{id}"
+      body: "*"
+    };
+  }
+
+  rpc DeleteKnowledgeBase(IDReply) returns (IDReply) {
+    option (google.api.http) = {
+      delete: "/api/v1/kb/{id}"
+    };
+  }
+
+  rpc GetKnowledgeBase(IDReply) returns (KnowledgeBase) {
+    option (google.api.http) = {
+      get: "/api/v1/kb/{id}"
+    };
+  }
+
+  rpc ListKnowledgeBase(ListKnowledgeBaseRequest) returns (ListKnowledgeBaseReply) {
+    option (google.api.http) = {
+      get: "/api/v1/kb"
+    };
+  }
+}
+
+message CreateKnowledgeBaseRequest {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string category = 4;
+  // 知识库状态
+  int32 status = 5;
+}
+
+message ListKnowledgeBaseRequest {
+  string name = 1;
+  int32  status = 2;
+  string category = 3;
+}
+
+message ListKnowledgeBaseReply {
+  // 知识库列表
+  repeated KnowledgeBase list = 1;
+}
+
+message KnowledgeBase {
+  // 知识库id
+  int64 id = 1;
+  // 知识库名称
+  string name = 2;
+  // 知识库描述
+  string description = 3;
+  // 知识库分类
+  string category = 4;
+  // 知识库状态
+  int32 status = 5;
+  // 知识库创建时间
+  google.protobuf.Timestamp createTime = 6;
+  // 知识库更新时间
+  google.protobuf.Timestamp updateTime = 7;
+}

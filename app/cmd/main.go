@@ -2,9 +2,10 @@ package main
 
 import (
 	"flag"
-	"github.com/google/wire"
 	"os"
 	"ragx/app/pkg/ai"
+
+	"github.com/google/wire"
 
 	"ragx/app/pkg/encoder"
 	logging "ragx/app/pkg/logger"
@@ -98,4 +99,12 @@ func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
 	)
 }
 
-var ProviderSet = wire.NewSet(ai.NewChatModel)
+func newAIClient(c *conf.Bootstrap) *ai.Client {
+	return ai.NewClient(os.Getenv("OPENAI_API_KEY"),
+		ai.WithOnlyChatModel(false),
+		ai.WithESAddress(c.Data.Elasticsearch.Address),
+		ai.WithIndexName(c.Data.Elasticsearch.IndexName),
+	)
+}
+
+var ProviderSet = wire.NewSet(newAIClient)

@@ -1,0 +1,23 @@
+package repo
+
+import (
+	"github.com/go-kratos/kratos/v2/log"
+	"ragx/app/internal/biz"
+	"ragx/app/internal/biz/query"
+	. "ragx/app/internal/data/repo"
+)
+
+{{ range $tableName , $table := .tableInfos }}
+    {{$name := toLower $table.TableName -}}
+    {{ if ne $name "schema_migrations"  }}
+    func New{{.StructName}}Repo(data biz.Data, logger log.Logger) biz.{{.StructName}}Repo {
+    	return &{{.StructName}}Repo{
+    		Data:  data,
+    		DB:    data.DB(),
+    		Rdb:   data.Rdb(),
+    		GormQuery: query.Use(data.DB()),
+    		Log:   log.NewHelper(logger),
+    	}
+    }
+    {{- end }}
+{{- end }}

@@ -2,14 +2,17 @@ package utils
 
 import (
 	"fmt"
-	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-kratos/kratos/v2/transport"
-	"github.com/gogf/gf/v2/errors/gerror"
-	"github.com/sirupsen/logrus"
 	"math/rand"
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v2/transport"
+	"github.com/gogf/gf/v2/errors/gerror"
+	"github.com/jinzhu/copier"
+	"github.com/sirupsen/logrus"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func GetShortName(email string) string {
@@ -229,4 +232,99 @@ func GetTimeZoneAndOffsetStr(timeZoneName string) (*time.Location, string) {
 	formattedOffset := fmt.Sprintf("UTC%s%02d:%02d", sign, hours, minutes)
 
 	return loc, formattedOffset
+}
+
+// time.Time类型与*timestamppb.Timestamp类型互相转换器
+var CopierConverter = copier.Option{
+	IgnoreEmpty: true,
+	DeepCopy:    true,
+	Converters: []copier.TypeConverter{
+		{
+			SrcType: time.Time{},
+			DstType: &timestamppb.Timestamp{},
+			Fn: func(src interface{}) (interface{}, error) {
+				s, ok := src.(time.Time)
+				if !ok {
+					return nil, nil
+				}
+				return timestamppb.New(s), nil
+			},
+		},
+		{
+			SrcType: &time.Time{},
+			DstType: &timestamppb.Timestamp{},
+			Fn: func(src interface{}) (interface{}, error) {
+				s, ok := src.(*time.Time)
+				if !ok || s == nil { // 如果IgnoreEmpty设置为了false，s可能为nil
+					return nil, nil
+				}
+				return timestamppb.New(*s), nil
+			},
+		},
+		// 反向转换器
+		{
+			SrcType: &timestamppb.Timestamp{},
+			DstType: time.Time{},
+			Fn: func(src interface{}) (interface{}, error) {
+				s, ok := src.(*timestamppb.Timestamp)
+				if !ok || s == nil {
+					return time.Time{}, nil
+				}
+				return s.AsTime(), nil
+			},
+		},
+		{
+			SrcType: &timestamppb.Timestamp{},
+			DstType: &time.Time{},
+			Fn: func(src interface{}) (interface{}, error) {
+				s, ok := src.(*timestamppb.Timestamp)
+				if !ok || s == nil {
+					return nil, nil
+				}
+				return Ptr(s.AsTime()), nil
+			},
+		},
+		// 时间转毫秒时间戳
+		{
+			SrcType: time.Time{},
+			DstType: int64(0),
+			Fn: func(src interface{}) (interface{}, error) {
+				s, ok := src.(time.Time)
+				if !ok {
+					return nil, nil
+				}
+				return s.UnixMilli(), nil // 直接返回Unix时间戳
+			},
+		},
+		{
+			SrcType: &time.Time{},
+			DstType: int64(0),
+			Fn: func(src interface{}) (interface{}, error) {
+				s, ok := src.(*time.Time)
+				if !ok || s == nil {
+					return nil, nil
+				}
+				return s.UnixMilli(), nil // 直接返回Unix时间戳
+			},
+		},
+	},
+}
+
+// 可以处理time.Time类型与*timestamppb.Timestamp类型互相转换的copy
+func Copy(toValue interface{}, fromValue interface{}) {
+	copier.CopyWithOption(toValue, fromValue, CopierConverter)
+}
+
+// 判断字符串是否为有效的URL
+// str: 待检查的字符串
+// 返回值: 如果是有效URL返回true，否则返回false
+func IsURL(str string) bool {
+	// 解析URL
+	u, err := url.Parse(str)
+	if err != nil {
+		// 解析失败，不是有效URL
+		return false
+	}
+	// 有效的URL需要包含协议和主机名
+	return u.Scheme != "" && u.Host != ""
 }
