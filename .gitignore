@@ -38,3 +38,4 @@ go.work.sum
 app/internal/data/biz-tmp/
 app/internal/data/repo-base-tmp/
 app/cmd/uploads
+data/
