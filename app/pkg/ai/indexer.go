@@ -4,7 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/elastic/go-elasticsearch/v8/typedapi/indices/create"
+	"github.com/elastic/go-elasticsearch/v8/typedapi/indices/exists"
+	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
 	"log"
+	"ragx/app/pkg/utils"
 
 	"github.com/cloudwego/eino-ext/components/indexer/es8"
 	"github.com/cloudwego/eino/components/indexer"
@@ -38,6 +42,9 @@ var (
 
 // 创建一个新的索引器
 func newIndexer(c *Client) indexer.Indexer {
+	if err := createIndexIfNotExists(c); err != nil {
+		log.Fatalf("create index failed, err: %+v", err)
+	}
 	config := &es8.IndexerConfig{
 		// es客户端
 		Client: c.ESClient,
@@ -95,6 +102,39 @@ func newIndexer(c *Client) indexer.Indexer {
 		log.Fatalf("new indexer failed, err: %+v", gerror.Wrap(err, ""))
 	}
 	return idx
+}
+
+// es索引是否存在，不存在则创建
+func createIndexIfNotExists(c *Client) error {
+	ctx := context.Background()
+	indexExists, err := exists.NewExistsFunc(c.ESClient)(c.indexName).Do(ctx)
+	if err != nil {
+		return err
+	}
+	if indexExists {
+		return nil
+	}
+	_, err = create.NewCreateFunc(c.ESClient)(c.indexName).Request(&create.Request{
+		Mappings: &types.TypeMapping{
+			Properties: map[string]types.Property{
+				FieldContent:  types.NewTextProperty(),
+				FieldExtra:    types.NewTextProperty(),
+				KnowledgeName: types.NewKeywordProperty(),
+				FieldContentVector: &types.DenseVectorProperty{
+					Dims:       utils.Ptr(1024), // same as embedding dimensions
+					Index:      utils.Ptr(true),
+					Similarity: utils.Ptr("cosine"),
+				},
+				FieldQAContentVector: &types.DenseVectorProperty{
+					Dims:       utils.Ptr(1024), // same as embedding dimensions
+					Index:      utils.Ptr(true),
+					Similarity: utils.Ptr("cosine"),
+				},
+			},
+		},
+	}).Do(ctx)
+
+	return err
 }
 
 // 获取文档的扩展数据

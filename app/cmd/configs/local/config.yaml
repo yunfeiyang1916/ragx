@@ -20,7 +20,7 @@ data:
     addrs:
       - "localhost:6379"
   elasticsearch:
-    address: "localhost:9200"
+    address: "http://localhost:9200"
     index_name: "ragx"
     #username: "elastic"
     #password: "123456"

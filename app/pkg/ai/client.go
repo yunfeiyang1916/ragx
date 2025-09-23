@@ -2,10 +2,7 @@ package ai
 
 import (
 	"context"
-	"log"
-	"ragx/app/pkg/utils"
-
-	openaiEmbedding "github.com/cloudwego/eino-ext/components/embedding/openai"
+	"github.com/cloudwego/eino-ext/components/embedding/ark"
 	"github.com/cloudwego/eino-ext/components/model/openai"
 	"github.com/cloudwego/eino/components/document"
 	"github.com/cloudwego/eino/components/embedding"
@@ -13,6 +10,7 @@ import (
 	"github.com/cloudwego/eino/components/model"
 	"github.com/cloudwego/eino/components/retriever"
 	"github.com/elastic/go-elasticsearch/v8"
+	"log"
 )
 
 const (
@@ -42,7 +40,8 @@ type Client struct {
 	// API密钥
 	apiKey string
 	// API基础URL
-	baseUrl string
+	baseUrl         string
+	embeddingApiKey string
 	/*
 		温度参数，控制生成文本的随机性
 		| Temperature Value | Randomness   | Applicable Scenarios                      |
@@ -77,7 +76,7 @@ func NewClient(apiKey string, opts ...ClientOption) *Client {
 		baseUrl:            DefaultBaseUrl,
 		maxTokens:          defaultMaxTokens,
 		modelName:          DefaultModel,
-		embeddingModelName: "text2vec-large-chinese",
+		embeddingModelName: "doubao-embedding-text-240715",
 		temperature:        0,
 		onlyChatModel:      true,
 	}
@@ -100,14 +99,11 @@ func NewClient(apiKey string, opts ...ClientOption) *Client {
 		return c
 	}
 	// 初始化嵌入器
-	embeddingConfig := &openaiEmbedding.EmbeddingConfig{
-		APIKey:     c.apiKey,
-		Model:      c.embeddingModelName,
-		Dimensions: utils.Ptr(1024),
-		Timeout:    0,
-		BaseURL:    c.baseUrl,
+	embeddingConfig := &ark.EmbeddingConfig{
+		APIKey: c.embeddingApiKey,
+		Model:  c.embeddingModelName,
 	}
-	embedder, err := openaiEmbedding.NewEmbedder(context.Background(), embeddingConfig)
+	embedder, err := ark.NewEmbedder(context.Background(), embeddingConfig)
 	if err != nil {
 		log.Fatalf("new openai embedding failed, err: %+v", err)
 	}

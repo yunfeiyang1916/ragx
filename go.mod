@@ -11,7 +11,7 @@ require (
 	github.com/cloudwego/eino-ext/components/document/parser/pdf v0.0.0-20250919093114-b7a34962a8d8
 	github.com/cloudwego/eino-ext/components/document/transformer/splitter/markdown v0.0.0-20250919093114-b7a34962a8d8
 	github.com/cloudwego/eino-ext/components/document/transformer/splitter/recursive v0.0.0-20250919093114-b7a34962a8d8
-	github.com/cloudwego/eino-ext/components/embedding/openai v0.0.0-20250919093114-b7a34962a8d8
+	github.com/cloudwego/eino-ext/components/embedding/ark v0.1.0
 	github.com/cloudwego/eino-ext/components/indexer/es8 v0.0.0-20250919093114-b7a34962a8d8
 	github.com/cloudwego/eino-ext/components/model/openai v0.0.0-20250916084527-de8ccb471c00
 	github.com/cloudwego/eino-ext/components/retriever/es8 v0.0.0-20250919093114-b7a34962a8d8
@@ -78,6 +78,7 @@ require (
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
+	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.10 // indirect
@@ -91,10 +92,13 @@ require (
 	github.com/perimeterx/marshmallow v1.1.5 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/slongfield/pyfmt v0.0.0-20220222012616-ea85ff4c361f // indirect
+	github.com/smarty/assertions v1.16.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/vmihailenco/go-tinylfu v0.2.2 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.3.4 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
+	github.com/volcengine/volc-sdk-golang v1.0.23 // indirect
+	github.com/volcengine/volcengine-go-sdk v1.0.181 // indirect
 	github.com/yargevad/filepathx v1.0.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/otel v1.38.0 // indirect
@@ -108,6 +112,7 @@ require (
 	golang.org/x/text v0.29.0 // indirect
 	golang.org/x/tools v0.36.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250826171959-ef028d996bc1 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/datatypes v1.2.4 // indirect
 	gorm.io/driver/mysql v1.5.7 // indirect

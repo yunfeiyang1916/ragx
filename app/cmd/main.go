@@ -104,6 +104,7 @@ func newAIClient(c *conf.Bootstrap) *ai.Client {
 		ai.WithOnlyChatModel(false),
 		ai.WithESAddress(c.Data.Elasticsearch.Address),
 		ai.WithIndexName(c.Data.Elasticsearch.IndexName),
+		ai.WithEmbeddingApiKey(os.Getenv("ARK_EMBEDDING_API_KEY")),
 	)
 }
 

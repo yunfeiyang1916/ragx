@@ -61,3 +61,10 @@ func WithESAddress(esAddress string) ClientOption {
 		c.esAddress = esAddress
 	}
 }
+
+// 设置embedding api key
+func WithEmbeddingApiKey(apiKey string) ClientOption {
+	return func(c *Client) {
+		c.embeddingApiKey = apiKey
+	}
+}
