@@ -4,11 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
+	"ragx/app/pkg/utils"
+
 	"github.com/elastic/go-elasticsearch/v8/typedapi/indices/create"
 	"github.com/elastic/go-elasticsearch/v8/typedapi/indices/exists"
 	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
-	"log"
-	"ragx/app/pkg/utils"
 
 	"github.com/cloudwego/eino-ext/components/indexer/es8"
 	"github.com/cloudwego/eino/components/indexer"

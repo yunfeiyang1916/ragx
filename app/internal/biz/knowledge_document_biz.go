@@ -69,17 +69,17 @@ func (uc *KnowledgeDocumentUsecase) Create(ctx context.Context, req *pb.UploadIn
 		return nil, err
 	}
 	// 调用转换器，对文档进行分隔、过滤、合并
-	docs, err = uc.aiClient.Transformer.Transform(ctx, docs)
-	if err != nil {
-		uc.log.Errorf("KnowledgeDocumentUsecase.Create Transform err: %+v", gerror.Wrap(err, ""))
-		return nil, err
-	}
-	// 合并文档
-	docs, err = ai.DocAddIDAndMerge(ctx, docs)
-	if err != nil {
-		uc.log.Errorf("KnowledgeDocumentUsecase.Create Transform err: %+v", gerror.Wrap(err, ""))
-		return nil, err
-	}
+	//docs, err = uc.aiClient.Transformer.Transform(ctx, docs)
+	//if err != nil {
+	//	uc.log.Errorf("KnowledgeDocumentUsecase.Create Transform err: %+v", gerror.Wrap(err, ""))
+	//	return nil, err
+	//}
+	//// 合并文档
+	//docs, err = ai.DocAddIDAndMerge(ctx, docs)
+	//if err != nil {
+	//	uc.log.Errorf("KnowledgeDocumentUsecase.Create Transform err: %+v", gerror.Wrap(err, ""))
+	//	return nil, err
+	//}
 	// 调用索引器，将文档索引到向量数据库
 	// 设置知识库的名称
 	ctx = context.WithValue(ctx, ai.KnowledgeName, req.KnowledgeName)
